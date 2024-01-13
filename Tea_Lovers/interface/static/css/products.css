@@ -1,0 +1,31 @@
+.price-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.price-container .price {
+    margin-right: auto; /* pushes everything else to the right */
+}
+.remove-button {
+    white-space: nowrap; /* Prevent the button text from wrapping */
+}
+
+.remove-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.minus-sign {
+    display: inline-block;
+    color: red;
+    font-size: 20px; /* Adjust size as needed */
+    margin-left: 5px; /* Adjust spacing as needed */
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff; /* Bootstrap primary color */
+    border-color: #007bff;
+    color: white;
+}
