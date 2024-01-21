@@ -1,0 +1,18 @@
+/* ********************************************************************* */
+/* Pagination*************************************************************/
+/* ********************************************************************* */
+.pagination-padding {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.pagination{
+    padding-top: 18px;
+}
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+    justify-content: center; /* Keep items centered */
+    padding-top: 18px;
+}

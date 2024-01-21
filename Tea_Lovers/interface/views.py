@@ -205,6 +205,13 @@ def empty_basket(request):
     return redirect('home')
 
 
+def basket(request):
+      
+    return render(request, 'basket.html')
+
+def pagination(request):
+      
+    return render(request, 'pagination.html')
 
 
 

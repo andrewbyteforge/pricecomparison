@@ -1,13 +1,84 @@
+/* ********************************************************************* */
+/* Global********************************************************* */
+/* ********************************************************************* */
+.grey-background {
+    background-color: #f8f9fa; /* Light grey color, adjust as needed */
+    border-radius: .25rem; /* Adjust for more or less rounding */
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075); /* Bootstrap's default shadow, adjust as needed */
+}
+
+
+
+
+/* ********************************************************************* */
+/* Logged in as********************************************************* */
+/* ********************************************************************* */
+.logged-in-info {
+    margin-left: 4px;
+    margin-top: 15px;
+    position: relative; /* you can adjust positioning if necessary */
+    /* add more styles if needed */
+}
+
+/* ********************************************************************* */
+/* Product Search*********************************************************/
+/* ********************************************************************* */
+
+
+
+.custom-padding {
+    padding: 5px; /* Adds 5px of space around the content inside the container */
+}
+
+
+
+
+/* ********************************************************************* */
+/* Table display results************************************************ */
+/* ********************************************************************* */
+
+
+/* # Empty as this element uses inline styling and bootstrap  */
+
+
+
+
+
+/* ********************************************************************* */
+/* Pagination*************************************************************/
+/* ********************************************************************* */
+
+
+.pagination-padding {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.pagination{
+
+    padding-top: 18px;
+}
+
+
+
+
+
+
+
+
+
+/* ********************************************************************* */
+/* Basket*************************************************************** */
+/* ********************************************************************* */
+
 .price-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .price-container .price {
     margin-right: auto; /* pushes everything else to the right */
-}
-.remove-button {
-    white-space: nowrap; /* Prevent the button text from wrapping */
 }
 
 .remove-btn {
@@ -15,6 +86,7 @@
     border: none;
     cursor: pointer;
     padding: 0;
+    white-space: nowrap; /* Prevent the button text from wrapping */
 }
 
 .minus-sign {
@@ -29,3 +101,81 @@
     border-color: #007bff;
     color: white;
 }
+
+
+.outer-padding {
+    padding: 15px; /* Adds 15px of space around the outside of the card */
+}
+
+.logged-in-user {
+    font-size: 1rem; /* Adjust font size for small screens */
+}
+
+.btn-shadow {
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Example shadow, adjust as needed */
+}
+
+@media (max-width: 576px) { /* Bootstrap's breakpoint for small devices */
+    .logged-in-user, .btn {
+        font-size: 0.8rem; /* Smaller font size for small devices */
+    }
+    .outer-padding {
+        padding: 1rem; /* Less padding on small screens */
+    }
+}
+
+/* Add these custom CSS rules to adjust spacing */
+.container.mt-3 {
+    margin-top: 0; /* Remove top margin on the container */
+    padding: 0; /* Remove padding on the container */
+}
+
+.card.outer-padding {
+    padding: 10px; /* Adjust padding around the card */
+    margin: 0; /* Remove margin on the card */
+}
+
+.table.table-bordered {
+    margin: 0; /* Remove margin on the table */
+}
+
+/* Additional custom styling for the Asda Shopping Basket */
+#asdaBasket {
+    margin-top: 10px; /* Add margin to the top of the table */
+}
+
+
+.basket-area {
+    position: relative;
+    padding: 0; /* Ensure there's no padding pushing content down */
+    margin: 0;  /* Ensure there's no margin pushing content down */
+    /* other styles for your basket area */
+}
+
+.teabag-image {
+    position: absolute;
+    top: -90px; /* Adjust this value as needed to move the image up */
+    right: 0;
+    width: 130px; /* Adjust the size as needed */
+    height: auto; /* This will maintain the aspect ratio */
+    /* additional styling if needed */
+    z-index: 1;
+}
+
+.teabag-image::after {
+    content: '';
+    position: absolute;
+    width: 100px; /* Width of the shadow */
+    height: 20px; /* Height of the shadow */
+    background: rgba(0, 0, 0, 0.5); /* Shadow color */
+    bottom: -10px; /* Position right below the legs */
+    left: 50px; /* Positioning horizontally */
+    border-radius: 50%;
+    filter: blur(10px); /* Makes it more like a shadow */
+    z-index: -1; /* Ensure it's under the image */
+}
+
+
+
+
+

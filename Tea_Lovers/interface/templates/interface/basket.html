@@ -1,0 +1,225 @@
+{% extends 'interface/base.html' %}
+{% load static %}
+{% block content %}
+                <!-- ***************************************************************** -->
+                <!-- Basket authentication -->
+                <!-- ***************************************************************** -->
+                <div class="container mt-3">
+                    <div class="row justify-content-center">
+                        <div class="basket-area" style="position: relative;">
+                            <img src="{% static 'images/teabag-sitting.png' %}" alt="Teabag" class="teabag-image">
+                        </div>
+                        
+                        <div class="col-lg-12 col-md-12">
+                        <div class="card grey-background outer-padding"> <!-- Apply the grey-background class here -->    
+                        <br>
+                        <br>
+                        {% if user.is_authenticated %}
+                        <p>Welcome to your basket, <b>{{ user.username }}</b></p>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col">                                
+                                <div class="d-flex align-items-center gap-2">
+                                    <form action="{% url 'logout' %}" method="post" class="mb-4">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-warning btn shadow">LOGOUT</button>                        
+                                    </form>
+                                    <form action="{% url 'empty_basket' %}" method="post" class="mb-4">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn shadow">Empty Basket</button>                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>   
+                <!-- ***************************************************************** -->
+                <!-- BASKETS -->
+                <!-- ***************************************************************** -->
+
+                <!-- ***************************************************************** -->
+                <!-- Asda Basket -->
+                <!-- ***************************************************************** -->                
+                <div class="container mt-3">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="card lighter-background outer-padding"> <!-- Add the custom lighter-background class here -->
+                                <br>
+                                <br>
+                                {% if user.is_authenticated %}
+                                    <p>Welcome to your basket, <b>{{ user.username }}</b></p>
+                                {% endif %}
+                                <h3 class="px-2">Asda Shopping Basket</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="asdaBasket">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Asda Item</th>
+                                                <th scope="col">Asda Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in user_basket_items %}
+                                                {% if item.product.store == 'Asda' %}
+                                                    <tr>
+                                                        <td>{{ item.product.name }}</td>
+                                                        <td class="d-flex justify-content-between align-items-center"> <!-- Apply justify-content-between and align-items-center classes here -->
+                                                            <div class="price-container">
+                                                                <span class="asda-price">{{ item.product.price }}</span>
+                                                            </div>
+                                                            <div class="d-flex flex-column align-items-center"> <!-- Create a new flex column for the remove button -->
+                                                                <button class="btn btn-danger btn-sm btn shadow" data-item-id="{{ item.id }}" data-store="Asda" data-price="{{ item.product.price }}" onclick="removeItemFromBasket(this)">REMOVE</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% empty %}
+                                                <tr>
+                                                    <td colspan="2">No Asda items found in your basket.</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td>Total</td>
+                                                <td id="asda-total">£{{ asda_total|default:"0.00" }}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ***************************************************************** -->
+                <!-- Tesco Basket -->
+                <!-- ***************************************************************** -->
+                <div class="container mt-3">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="card grey-background outer-padding"> <!-- Apply the grey-background class here -->    
+                                <br>
+                                <br>
+                                {% if user.is_authenticated %}
+                                    <p>Welcome to your basket, <b>{{ user.username }}</b></p>
+                                {% endif %}
+                                <h3 class="px-2">Tesco Shopping Basket</h3> <!-- Consider responsive padding like px-2 -->
+                                <div class="table-responsive"> <!-- Table-responsive wrapper for horizontal scrolling on small screens -->
+                                    <table class="table table-bordered" id="tescoBasket">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Tesco Item</th>
+                                                <th scope="col">Tesco Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in user_basket_items %}
+                                                {% if item.product.store == 'Tesco' %}
+                                                    <tr>
+                                                        <td>{{ item.product.name }}</td>
+                                                        <td class="d-flex justify-content-between">
+                                                            <div class="price-container">
+                                                                <span class="asda-price">{{ item.product.price }}</span>
+                                                                <button class="btn btn-danger btn-sm btn shadow" data-item-id="{{ item.id }}" data-store="Tesco" data-price="{{ item.product.price }}" onclick="removeItemFromBasket(this)">REMOVE</button>
+                                                            </div>
+                                                        </td>  
+                                                    </tr>
+                                                {% endif %}
+                                            {% empty %}
+                                                <tr>
+                                                    <td colspan="2">No Tesco items found in your basket.</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td>Total</td>
+                                                <td id="tesco-total">£{{ tesco_total|default:"0.00" }}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ***************************************************************** -->
+                <!-- Sainsburys Basket -->
+                <!-- ***************************************************************** -->
+                <div class="container mt-3">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="card grey-background outer-padding"> <!-- Apply the grey-background class here -->    
+                                <br>
+                                <br>
+                                {% if user.is_authenticated %}
+                                    <p>Welcome to your basket, <b>{{ user.username }}</b></p>
+                                {% endif %}
+                                <h3 class="px-2">Sainsburys Shopping Basket</h3> <!-- Consider responsive padding like px-2 -->
+                                <div class="table-responsive"> <!-- Table-responsive wrapper for horizontal scrolling on small screens -->
+                                    <table class="table table-bordered" id="sainsburysBasket">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Sainsburys Item</th>
+                                                <th scope="col">Sainsburys Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in user_basket_items %}
+                                                {% if item.product.store == 'Sainsburys' %}
+                                                    <tr>
+                                                        <td>{{ item.product.name }}</td>
+                                                        <td class="d-flex justify-content-between">
+                                                            <div class="price-container">
+                                                                <span class="asda-price">{{ item.product.price }}</span>
+                                                                <button class="btn btn-danger btn-sm btn shadow" data-item-id="{{ item.id }}" data-store="Asda" data-price="{{ item.product.price }}" onclick="removeItemFromBasket(this)">REMOVE</button>
+                                                            </div>
+                                                        </td>  
+                                                    </tr>
+                                                {% endif %}
+                                            {% empty %}
+                                                <tr>
+                                                    <td colspan="2">No Sainsburys items found in your basket.</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td>Total</td>
+                                                <td id="sainsburys-total">£{{ sainsburys_total|default:"0.00" }}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space" style="margin-bottom: 60px;">
+
+                </div>
+
+                <!-- ***************************************************************** -->
+                <!-- Product Table**************************************************** -->
+                <!-- ***************************************************************** -->           
+                <table>
+                    <tr>
+                    </tr>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.store }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.price }}</td>
+                    </tr>
+                    {% endfor %}
+                </table> 
+        
+                                                   
+           
+
+                <!-- ***************************************************************** -->
+                <!-- Javascript**************************************************** -->
+                <!-- ***************************************************************** -->   
+            <script type="text/javascript">
+                var addToBasketUrl = '{% url "add_to_basket" %}';
+            </script> 
+            <script src="{% static 'js/asda_basket.js' %}"></script>    
+{% endblock %}

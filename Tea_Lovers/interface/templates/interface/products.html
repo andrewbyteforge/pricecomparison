@@ -1,336 +1,209 @@
+{% extends 'interface/base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="en">
+{% block content %}
+            <!-- PRODUCT SEARCH -->
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12 col-md-10">
+                        
+                        <!-- User Info, Teabag Image and Logout Button -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <p class="logged-in-info" style="margin-bottom: 0;">Logged in as <b>{{ user.username }}</b> &#128512;</p>
+                            
+                          
+                            <!-- Flex Container for Teabag Image and Logout Button -->
+                            <div style="display: flex; align-items: center; justify-content: flex-end;">
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/products.css' %}">
-    <title style="padding: 10px;">Hello, world!</title>
-
-    <!-- Jquery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJSmH5cnnnFIsRU/8F7t7/3pJ/lE7L+OcWOhg=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-</head>
-    <body>        
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10">
-                    <div class="card my-5">
-                        <h5 class="card-header">Product Search</h5>
-                        <div class="card-body">
-        
-                            <div style="display: flex; justify-content: flex-start; align-items: center;">
-                                
-                                <form action="/products/" method="post" style="margin-right: 10px;">
-                                    {% csrf_token %}
-                                    {{ form.as_p }}
-                                    <p>Enter product names separated by commas (e.g., oranges, tea)</p>
-                                    <button type="submit" class="btn btn-primary mb-3 btn shadow"  >Search</button>
-                                </form>
-                                
-                                <div style="margin-left: auto; margin-top: 30px;"> <!-- Added margin-top here -->
-                                    <form action="{% url 'delete_all_entries' %}" method="post" style="display: inline-block;">
+                                <!-- Teabag Image -->
+                                <div style="flex-shrink: 0; position: relative; z-index: 1; ">
+                                    <a href="#" id="teabag-logout-link">
+                                        <img src="{% static 'images/teabag-leaning.png' %}" alt="Teabag-Leaning" style="height: 200px; margin-right: -50px; margin-bottom: 40px;">
+                                    </a>
+                                </div>                               
+                                <!-- Logout Button -->
+                                <div style="flex-shrink: 0;">
+                                    <form id="logout-form" action="{% url 'logout' %}" method="post">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger btn shadow">Delete All Entries db</button>
-                                    </form>
-                                    
-                                    <form action="{% url 'display_database' %}" method="post" style="display: inline-block;">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-primary btn shadow">Display Database</button>
+                                        <button type="submit" class="btn btn-warning btn shadow" style="margin-right: 1px; ">LOGOUT</button>                        
                                     </form>
                                 </div>
-                            </div>
-        
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>     
-                                                  
-                    
 
-        <br>
-        <br>
-          
-
-        <!-- Tables displaying results from query -->
-        <div class="container">            
-            <!-- Store Table -->
-            <div class="row">
-                <!-- Tesco Table -->
-                <div class="col">
-                    <h3>Tesco</h3>
-                    <table class="table table-striped table-sm" id="tescoTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">Store</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Add</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for product in tesco_products %}
-                            <tr>
-                                <td>{{ product.store }}</td>
-                                <td>{{ product.name }}</td>
-                                <td>{{ product.price }}</td>
-                                <!-- <td><span class="add-to-basket" onclick="addToBasket(this)" data-store="Tesco" data-name="{{ product.name }}" data-price="{{ product.price }}">+</span>
-
-                                </td> -->
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="4">No results found</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <!-- Asda Table -->
-                <div class="col">
-                    <h3>Asda</h3>
-                    <table class="table table-striped table-sm" id="asdaTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">Store</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Add</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for product in asda_products %}
-                            <tr>
-                                <td>{{ product.store }}</td>
-                                <td>{{ product.name }}</td>
-                                <td>{{ product.price }}</td>
-                                <td>
-                                    <span class="add-to-basket" onclick="addToBasket(this)" data-store="Asda" data-name="{{ product.name }}" data-price="{{ product.price }}">+</span>
-                                </td>
-                                
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="4">No results found</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <!-- Sainsburys Table -->
-                <div class="col">
-                    <h3>Sainsburys</h3>
-                    <table class="table table-striped table-sm" id="sainsburysTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">Store</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Add</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for product in sainsburys_products %}
-                            <tr>
-                                <td>{{ product.store }}</td>
-                                <td>{{ product.name }}</td>
-                                <td>{{ product.price }}</td>
-                                <!-- <td><span class="add-to-basket" onclick="addToBasket(this)" data-store="Sainsburys" data-name="{{ product.name }}" data-price="{{ product.price }}">+</span>
-                                </td> -->
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="4">No results found</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    {% if list_per_page.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?query={{ search_query }}&page={{ list_per_page.previous_page_number }}">Previous</a>
-                        </li>
-                    {% endif %}
-            
-                    {% for num in list_per_page.paginator.page_range %}
-                        {% if current_page == num %}
-                            <li class="page-item active"><a class="page-link" href="?query={{ search_query }}&page={{ num }}">{{ num }}</a></li>
-                        {% else %}
-                            <li class="page-item"><a class="page-link" href="?query={{ search_query }}&page={{ num }}">{{ num }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-            
-                    {% if list_per_page.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?query={{ search_query }}&page={{ list_per_page.next_page_number }}">Next</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
-          
-            
-            
-                
-
-
-        <br>
-        <br>
-
-
-            <!-- Basket -->
-            <div class="row">
-                <div class="col">
-                    <br>
-                    <br>
-                    {% if user.is_authenticated %}
-                    <p>Welcome to your basket, <b>{{ user.username }}</b></p>
-                    {% endif %}
-                    <div class="row">
-                        <div class="col">
-                            <!-- ... other content ... -->
-                            <div class="d-flex align-items-center gap-2">
-                                <form action="{% url 'logout' %}" method="post" class="mb-0">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-warning btn shadow">LOGOUT</button>                        
-                                </form>
-                                <form action="{% url 'empty_basket' %}" method="post" class="mb-0">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger btn shadow">Empty Basket</button>                        
-                                </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    
-                    <br>
-                    
-                    <h3>Shopping Basket</h3>
-                    <table class="table table-bordered" id="basket">
-                        <thead>
-                            <tr>
-                                <th scope="col">Tesco Item</th>
-                                <th scope="col">Tesco Price</th>
-                                <th scope="col">Asda Item</th>
-                                <th scope="col">Asda Price</th>
-                                <th scope="col">Sainsburys Item</th>
-                                <th scope="col">Sainsburys Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in user_basket_items %}
-                            <tr>
-                                <td>{% if item.product.store == 'Tesco' %}{{ item.product.name }}{% endif %}</td>
-                                <td class="d-flex justify-content-between">
-                                    {% if item.product.store == 'Tesco' %}
-                                        <span>{{ item.product.price }}</span>
-                                        <button class="btn btn-danger btn-sm btn shadow" onclick="removeItemFromBasket(/* parameters to identify the item */)">REMOVE</button>
-                                    {% endif %}
-                                </td>
-
-                                <td>{% if item.product.store == 'Asda' %}{{ item.product.name }}{% endif %}</td>
-                                <td class="d-flex justify-content-between">
-                                    {% if item.product.store == 'Asda' %}
-                                    <div class="price-container">
-                                        <span class="asda-price">{{ item.product.price }}</span>
-                                        <!-- Rest of your code -->
+            
+                        <div class="card my-5 grey-background"> <!-- Added custom class here -->
+                            <h5 class="card-header">Product Search</h5>
+                            <div class="card-body">
+            
+                                <div style="display: flex; justify-content: flex-start; align-items: center;">
+                                    
+                                    <form action="/products/" method="post" style="margin-right: 10px;">
+                                        {% csrf_token %}
+                                        {{ form.as_p }}
+                                        <p>Enter product names separated by commas (e.g., oranges, tea)</p>
+                                        <button type="submit" class="btn btn-primary mb-3 btn shadow"  >Search</button>
+                                    </form>
+                                    
+                                    <div style="margin-left: auto; margin-top: 80px;"> <!-- Added margin-top here -->
+                                        <form action="{% url 'delete_all_entries' %}" method="post" style="display: inline-block;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger btn shadow fs-6">Delete db</button>
+                                        </form>                                    
+                                        <form action="{% url 'display_database' %}" method="post" style="display: inline-block; margin-top: 5px;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary btn shadow">Display db</button>
+                                        </form>                                    
                                     </div>
-                                    {% endif %}
-                                    <button class="btn btn-danger btn-sm btn shadow"
-                                    data-item-id="{{ item.id }}"
-                                    data-store="Asda"
-                                    data-price="{{ item.product.price }}"
-                                    onclick="removeItemFromBasket(this)">REMOVE</button>                            
-                                </td>                                     
-                                                                  
-                                <td>{% if item.product.store == 'Sainsburys' %}{{ item.product.name }}{% endif %}</td>
-                                <td class="d-flex justify-content-between">
-                                    {% if item.product.store == 'Sainsburys' %}
-                                        <span>{{ item.product.price }}</span>
-                                        <button class="btn btn-danger btn-sm btn shadow" onclick="removeItemFromBasket(this)">REMOVE</button>
-                                    {% endif %}
-                                </td>
+                                </div>        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+                                                    
+            <!-- Tables displaying results from query -->
+            <div class="container mt-3"> 
+                <div class="card grey-background"> <!-- Apply the grey-background class here -->  
+                    <div class="card-body custom-padding"> <!-- Apply custom-padding class here -->         
+                        <!-- Store Table -->
+                        <div class="row">
+                    
+                            <!-- Tesco Table -->
+                            <div class="col-12 col-md-6">
+                                <br>
+                                <br>
+                                <h3>Tesco</h3>
+                                <table class="table table-striped table-sm" id="tescoTable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Store</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Add</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for product in tesco_products %}
+                                        <tr>
+                                            <td>{{ product.store }}</td>
+                                            <td>{{ product.name }}</td>
+                                            <td>{{ product.price }}</td>
+                                            <!-- <td><span class="add-to-basket" onclick="addToBasket(this)" data-store="Tesco" data-name="{{ product.name }}" data-price="{{ product.price }}">+</span>
+
+                                            </td> -->
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="4">No results found</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Asda Table -->
+                            <div class="col-12 col-md-6">
+                                <br>
+                                <br>
+                                <h3>Asda</h3>
+                                <table class="table table-striped table-sm" id="asdaTable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Store</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Add</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for product in asda_products %}
+                                        <tr>
+                                            <td>{{ product.store }}</td>
+                                            <td>{{ product.name }}</td>
+                                            <td>{{ product.price }}</td>
+                                            <td>
+                                                <span class="add-to-basket" onclick="addToBasket(this)" data-store="Asda" data-name="{{ product.name }}" data-price="{{ product.price }}">+</span>
+                                            </td>
+                                            
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="4">No results found</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Sainsburys Table -->
+                            <div class="col-12 col-md-6">
+                                <br>
+                                <br>
+                                <h3>Sainsburys</h3>
+                                <table class="table table-striped table-sm" id="sainsburysTable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Store</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Add</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for product in sainsburys_products %}
+                                        <tr>
+                                            <td>{{ product.store }}</td>
+                                            <td>{{ product.name }}</td>
+                                            <td>{{ product.price }}</td>
+                                            <!-- <td><span class="add-to-basket" onclick="addToBasket(this)" data-store="Sainsburys" data-name="{{ product.name }}" data-price="{{ product.price }}">+</span>
+                                            </td> -->
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="4">No results found</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <br>
+                        <br>
+                        {% include 'interface/pagination.html' %}    
+                        <br>
+                        <br>  
+                        <!-- Basket -->
+                        {% include 'interface/basket.html' %}
+                        <!-- Product Table -->
+                        <table>
+                            <tr>
+                            </tr>
+                            {% for product in products %}
+                            <tr>
+                                <td>{{ product.store }}</td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.price }}</td>
                             </tr>
                             {% endfor %}
-                        </tbody>
-                        
-                        <tfoot>
-                            <!-- Row for Totals -->
-                            <tr>
-                                <td></td> <!-- Gap for item name -->
-                                <td id="tesco-total">
-                                    £{{ tesco_total|default:"0.00" }}
-                                </td>
-                                <td></td> <!-- Gap for item name -->
-                                <td id="asda-total">
-                                    £{{ asda_total|default:"0.00" }}
-                                </td>
-                                <td></td> <!-- Gap for item name -->
-                                <td id="sainsburys-total">
-                                    £{{ sainsburys_total|default:"0.00" }}
-                                </td>
-                            </tr>                
-                        </tfoot>
-                        
-
-
-                    </table>
-                </div>
-            </div>
-
-
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-
-            <!-- DB buttons -->
-            <!-- Display Products only if search_query is None -->
-
+                        </table>         
             
-            <br>
-            <br>
-            <!-- Product Table -->
-            <table>
-                <tr>
-                </tr>
-                {% for product in products %}
-                <tr>
-                    <td>{{ product.store }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.price }}</td>
-                </tr>
-                {% endfor %}
-            </table>             
-           
+                        
 
-       
+<script type="text/javascript">
+    var addToBasketUrl = '{% url "add_to_basket" %}';
+</script> 
+<script src="{% static 'js/asda_basket.js' %}"></script>
 
-            <!-- Additional tags -->
-            <div id="error-message" style="color: red; padding: 40px;"></div>                        
-        </div> 
-        <script type="text/javascript">
-            var addToBasketUrl = '{% url "add_to_basket" %}';
-        </script> 
-        <script src="{% static 'js/asda_basket.js' %}"></script>
-    </body>
-</html>
+<!-- Logout on image -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('teabag-logout-link').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default anchor action
+            document.getElementById('logout-form').submit(); // Submit the logout form
+        });
+    });
+</script>
+{% endblock %}

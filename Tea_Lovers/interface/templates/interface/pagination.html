@@ -1,0 +1,39 @@
+{% extends 'interface/base.html' %}
+{% load static %}
+{% block content %}
+            <!-- PAGINATION -->
+
+            <div class="container-fluid pagination-padding"> <!-- Use container-fluid for full width with padding -->
+                <div class="card grey-background"> <!-- Apply the grey-background class here -->
+                    <h3 class="px-2">Pages</h3>
+                    <div class="card-body custom-padding"> <!-- Apply custom-padding class here -->
+                        <div class="d-flex justify-content-center"> <!-- This div will center the pagination -->
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination pagination-centered">
+                                    {% if list_per_page.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?query={{ search_query }}&page={{ list_per_page.previous_page_number }}">Previous</a>
+                                        </li>
+                                    {% endif %}
+                            
+                                    {% for num in list_per_page.paginator.page_range %}
+                                        {% if current_page == num %}
+                                            <li class="page-item active"><a class="page-link" href="?query={{ search_query }}&page={{ num }}">{{ num }}</a></li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="?query={{ search_query }}&page={{ num }}">{{ num }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                            
+                                    {% if list_per_page.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?query={{ search_query }}&page={{ list_per_page.next_page_number }}">Next</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>           
+         
+{% endblock %}       
