@@ -1,8 +1,6 @@
 {% load static %}
-
 <!doctype html>
-<html lang="en">
-    
+<html lang="en">    
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -21,9 +19,7 @@
     <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
     <link rel="stylesheet" href="{% static 'css/basket.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link rel="stylesheet" href="{% static 'css/register_user.css' %}" type="text/css">
-    
-
+    <link rel="stylesheet" href="{% static 'css/register_user.css' %}" type="text/css">   
 
     <!-- jQuery UI CSS -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -36,20 +32,15 @@
 
     <title>Price Comparison</title> 
 </head>
-
 <body>
     {% include 'interface/navbar.html' %}
     <br>
     <br/>
     <div class="container">
-        {% block content %} 
-                   
+        {% block content %}                    
         {% endblock %}    
     </div>
     <br />
-
-    
-
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
