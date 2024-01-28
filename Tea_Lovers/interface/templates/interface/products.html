@@ -58,11 +58,9 @@
                                     </div>        
                                 </div>
                             </div>
-                        </div>
-                        
-
-             
-                                                    
+                        </div>                        
+                </div>             
+            </div>                                      
             <!-- Tables displaying results from query -->
             <div class="container mt-3"> 
                 <div class="card grey-background"> <!-- Apply the grey-background class here -->  
@@ -189,22 +187,21 @@
                                 <td>{{ product.price }}</td>
                             </tr>
                             {% endfor %}
-                        </table>         
-            
-                        
+                        </table>        
+            </div>         
 
-<script type="text/javascript">
-    var addToBasketUrl = '{% url "add_to_basket" %}';
-</script> 
-<script src="{% static 'js/asda_basket.js' %}"></script>
+    <script type="text/javascript">
+        var addToBasketUrl = '{% url "add_to_basket" %}';
+    </script> 
+    <script src="{% static 'js/asda_basket.js' %}"></script>
 
-<!-- Logout on image -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('teabag-logout-link').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default anchor action
-            document.getElementById('logout-form').submit(); // Submit the logout form
+    <!-- Logout on image -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('teabag-logout-link').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default anchor action
+                document.getElementById('logout-form').submit(); // Submit the logout form
+            });
         });
-    });
-</script>
+    </script>
 {% endblock %}
