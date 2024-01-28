@@ -31,36 +31,37 @@
                                 </div>
                             </div>
                         </div>
-            
-                        <div class="card my-5 grey-background"> <!-- Added custom class here -->
-                            <h5 class="card-header">Product Search</h5>
-                            <div class="card-body">
-            
-                                <div style="display: flex; justify-content: flex-start; align-items: center;">
-                                    
-                                    <form action="/products/" method="post" style="margin-right: 10px;">
-                                        {% csrf_token %}
-                                        {{ form.as_p }}
-                                        <p>Enter product names separated by commas (e.g., oranges, tea)</p>
-                                        <button type="submit" class="btn btn-primary mb-3 btn shadow"  >Search</button>
-                                    </form>
-                                    
-                                    <div style="margin-left: auto; margin-top: 80px;"> <!-- Added margin-top here -->
-                                        <form action="{% url 'delete_all_entries' %}" method="post" style="display: inline-block;">
+                        
+                        <!-- Product Search -->
+                        <div class="card my-5 grey-background outer-padding">
+                            <div class="card">
+                                <h5 class="card-header">Quick Product Search</h5>
+                                <div class="card-body">            
+                                    <div style="display: flex; justify-content: flex-start; align-items: center;">                                    
+                                        <form action="/products/" method="post" style="margin-right: 10px;">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn btn-danger btn shadow fs-6">Delete db</button>
-                                        </form>                                    
-                                        <form action="{% url 'display_database' %}" method="post" style="display: inline-block; margin-top: 5px;">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-primary btn shadow">Display db</button>
-                                        </form>                                    
-                                    </div>
-                                </div>        
+                                            {{ form.as_p }}
+                                            <p>Enter product names separated by commas (e.g., oranges, tea)</p>
+                                            <button type="submit" class="btn btn-primary mb-3 btn shadow">Search</button>
+                                        </form>
+                                        
+                                        <div style="margin-left: auto; margin-top: 80px;">
+                                            <form action="{% url 'delete_all_entries' %}" method="post" style="display: inline-block;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger btn shadow fs-6">Delete db</button>
+                                            </form>                                    
+                                            <form action="{% url 'display_database' %}" method="post" style="display: inline-block; margin-top: 5px;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-primary btn shadow">Display db</button>
+                                            </form>                                    
+                                        </div>
+                                    </div>        
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>    
+                        
+
+             
                                                     
             <!-- Tables displaying results from query -->
             <div class="container mt-3"> 

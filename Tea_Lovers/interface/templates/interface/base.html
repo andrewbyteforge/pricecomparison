@@ -34,15 +34,16 @@
     
     <link rel="icon" href="{% static 'path/to/favicon.ico' %}">
 
-    <title>Invoice Schools</title> 
+    <title>Price Comparison</title> 
 </head>
 
 <body>
-
+    {% include 'interface/navbar.html' %}
     <br>
-    <br />
+    <br/>
     <div class="container">
-        {% block content %}            
+        {% block content %} 
+                   
         {% endblock %}    
     </div>
     <br />
@@ -57,11 +58,5 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous">
     </script> 
-
-
-
-
-
-
 </body>
 </html>

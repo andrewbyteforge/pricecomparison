@@ -16,3 +16,10 @@
     justify-content: center; /* Keep items centered */
     padding-top: 18px;
 }
+
+.pagination-container {
+    display: flex;
+    justify-content: center; /* Center pagination buttons */
+    padding: 18px 0; /* Top and bottom padding */
+    width: 100%; /* Ensure it takes full width */
+}
