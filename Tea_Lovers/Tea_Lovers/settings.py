@@ -41,10 +41,14 @@ INSTALLED_APPS = [
     'asda',
     'tesco',
     'sainsburys',
+    'morrisons',
+    
     'database',
     'interface',
     'scraper',
     'userarea',
+    
+    
     
 ]
 

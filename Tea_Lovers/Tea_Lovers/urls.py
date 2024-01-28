@@ -38,6 +38,11 @@ urlpatterns = [
     # Sainsburys urls
     path('', include('sainsburys.urls')), 
     
+    # Morrisons urls
+    path('', include('morrisons.urls')), 
+    
+    
+    
     # Interface urls
     path('interface/', include('interface.urls')),
     path('products/', include('interface.urls')),

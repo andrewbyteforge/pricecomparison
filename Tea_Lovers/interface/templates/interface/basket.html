@@ -8,7 +8,6 @@
                         <div class="basket-area" style="position: relative;">
                             <img src="{% static 'images/teabag-sitting.png' %}" alt="Teabag" class="teabag-image">
                         </div>
-                        
                         <div class="col-lg-12 col-md-12">
                         <div class="card grey-background outer-padding"> <!-- Apply the grey-background class here -->    
                         <br>
@@ -16,20 +15,24 @@
                         {% if user.is_authenticated %}
                         <p>Welcome to your basket, <b>{{ user.username }}</b></p>
                         {% endif %}
-                        <div class="row">
-                            <div class="col">                                
-                                <div class="d-flex align-items-center gap-2">
-                                    <form action="{% url 'logout' %}" method="post" class="mb-4">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-warning btn shadow">LOGOUT</button>                        
-                                    </form>
-                                    <form action="{% url 'empty_basket' %}" method="post" class="mb-4">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger btn shadow">Empty Basket</button>                        
-                                    </form>
-                                </div>
-                            </div>
-                        </div>   
+                                <div class="row">
+                                    <div class="col">                                
+                                        <div class="d-flex align-items-center gap-2">
+                                            <form action="{% url 'logout' %}" method="post" class="mb-4">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-warning btn shadow">LOGOUT</button>                        
+                                            </form>
+                                            <form action="{% url 'empty_basket' %}" method="post" class="mb-4">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger btn shadow">Empty Basket</button>                        
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div> 
+                        </div>
+                    </div>
+                </div>
                 <!-- ***************************************************************** -->
                 <!-- BASKETS -->
                 <!-- ***************************************************************** -->
@@ -193,9 +196,7 @@
                     </div>
                 </div>
                 <div class="space" style="margin-bottom: 60px;">
-
                 </div>
-
                 <!-- ***************************************************************** -->
                 <!-- Product Table**************************************************** -->
                 <!-- ***************************************************************** -->           
@@ -210,10 +211,6 @@
                     </tr>
                     {% endfor %}
                 </table> 
-        
-                                                   
-           
-
                 <!-- ***************************************************************** -->
                 <!-- Javascript**************************************************** -->
                 <!-- ***************************************************************** -->   

@@ -13,13 +13,19 @@ from loggingapp.custom_logging import Logger
 from asda.asda import AsdaScraper
 from tesco.tesco import TescoScraper
 from sainsburys.sainsburys import SainsburysScraper
+from morrisons.morrisons import MorrisonsScraper
 
 
 class Scraper:
     def __init__(self, url_key: str, search_term: str):
         base_url = FILE_CONFIG.get(url_key)
-        self.url = base_url.format(search_term)
+        self.url = base_url.format(search_term)      
         self.log = Logger().logger
+        self.log.info(f"Initialized URL for Morrisons scraper: {self.url}")
+        self.log.info(f"Initialized URL for Asda scraper: {self.url}")
+        self.log.info(f"Initialized URL for Tesco scraper: {self.url}")
+        self.log.info(f"Initialized URL for Sainsburys scraper: {self.url}")
+
 
     def scrape(self):
         """
@@ -98,15 +104,22 @@ class Scraper:
         sainsburys_scraper = SainsburysScraper(search_term)
         sainsburys_scraper.scrape()
         
-    """
-    The following methods are used to handle the data from each of the scrapers that are run
-    """    
-    thread_asda = threading.Thread(target=run_asda_scraper)
-    thread_tesco = threading.Thread(target=run_tesco_scraper)
-    thread_sainsburys = threading.Thread(target=run_sainsburys_scraper)
-
-   
-
+    def run_morrisons_scraper(self, search_term:str):    
+        """
+        Calls the morrisons scraper       
+        
+        Params:
+        None
+        
+        Exception:
+        If there are any issues with running the ASDA scraper it will raise an exception and log the error message to file
+        
+        Returns:
+        None
+        """          
+        morrisons_scraper = MorrisonsScraper(search_term)
+        morrisons_scraper.scrape()
+         
 if __name__ == "__main__":    
     search_term = ""
     scraper = Scraper('some_url_key', search_term)
@@ -115,13 +128,12 @@ if __name__ == "__main__":
     thread_asda = threading.Thread(target=scraper.run_asda_scraper, args=(search_term,))
     thread_tesco = threading.Thread(target=scraper.run_tesco_scraper, args=(search_term,))
     thread_sainsburys = threading.Thread(target=scraper.run_sainsburys_scraper, args=(search_term,))
-
+    thread_morrisons = threading.Thread(target=scraper.run_morrisons_scraper, args=(search_term,))
+    
     # Start all threads
     thread_asda.start()
     thread_tesco.start()
     thread_sainsburys.start()
+    thread_morrisons.start()    
 
-    # Optionally, join threads
-    # thread_asda.join()
-    # thread_tesco.join()
-    # thread_sainsburys.join()
+
