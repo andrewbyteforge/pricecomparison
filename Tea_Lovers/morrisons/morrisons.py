@@ -9,6 +9,7 @@ from loggingapp.custom_logging import Logger
 from database.models import Product
 from interface.forms import SearchForm
 from scraper.config import FILE_CONFIG
+from decimal import Decimal
 import decimal
 import time
 
@@ -65,17 +66,36 @@ class MorrisonsScraper:
             
             
             
-    def clean_price(self, price_str: str):
+    def clean_price(self, price_str):
         try:
-            self.log.debug(f"Raw price string: {price_str}")  # Log the raw price string
-            # Remove the currency symbol and any other non-numeric characters, except for the decimal point
+            self.log.info(f"Original price string: {price_str}")
+            # Check if price_str is already a Decimal
+            if isinstance(price_str, Decimal):
+                return price_str
+
+            # Handle price in pence (e.g., '36p')
+            if price_str.endswith('p'):
+                price_in_pounds = Decimal(price_str.replace('p', '').strip()) / Decimal('100')
+                return price_in_pounds
+
+            # Handle price in pounds (e.g., '36.00')
+            elif '.' in price_str:
+                price_parts = price_str.split('.')
+                pounds = int(price_parts[0])
+                pence = int(price_parts[1]) if len(price_parts) > 1 else 0
+                price_in_pounds = Decimal(f"{pounds}.{pence}")
+                return price_in_pounds
+
+            # Otherwise, clean and convert the string to Decimal
             cleaned_price = ''.join(filter(lambda x: x.isdigit() or x == '.', price_str))
-            # Convert the cleaned string to a decimal
-            return decimal.Decimal(cleaned_price)
+            self.log.info(f"Cleaned price: {cleaned_price}")
+            return Decimal(cleaned_price)
         except Exception as e:
-            self.log.warning(f"Could not clean price string: {e}")
-            # Return a default value in case of error, which is a valid decimal
-            return decimal.Decimal('0.00')
+            self.log.warning(f"Could not clean price string: {price_str} due to error: {e}")
+            return Decimal('0.00')
+
+
+
 
     def save_to_csv(self, data, filename):
         """
@@ -107,11 +127,8 @@ class MorrisonsScraper:
             self.log.error(f"CSV writing error: {e}")
 
             
-    def save_to_database(self, product_data_morrisons):                
+    def save_to_database(self, product_data_morrisons):
         for item in product_data_morrisons:
-            if item['name'] == "No Name" or item['price'] == "No Price":
-                self.log.warning("Skipping database update due to missing product data")
-                continue
             try:
                 # Clean the price and convert to decimal
                 cleaned_price = self.clean_price(item['price'])
@@ -127,3 +144,4 @@ class MorrisonsScraper:
                     self.log.info(f"Updated existing product: {product.name}")
             except Exception as e:
                 self.log.error(f"Database Error: {e}")
+

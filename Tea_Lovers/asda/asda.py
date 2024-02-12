@@ -6,8 +6,10 @@ from database.models import Product
 from interface.forms import SearchForm
 from scraper.config import FILE_CONFIG
 from decimal import Decimal, InvalidOperation
-import re
 import decimal 
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class AsdaScraper:
@@ -20,34 +22,37 @@ class AsdaScraper:
         self.log = Logger().logger
 
     def scrape(self):
-        """
-        Scrapes data from ASDA and stores it in a CSV file and updates the database.
-        """     
         self.log.info('Starting Asda scraping process')
         driver = self.scraper.scrape()
         if driver:
             try:
-                products = driver.find_elements(By.CSS_SELECTOR, 'li.co-item--rest-in-shelf')
+                # Use WebDriverWait to wait for the product elements to be present
+                wait = WebDriverWait(driver, 10)
+                products = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'li.co-item--rest-in-shelf')))
+                
                 product_data_asda = []
-                for product in products:                    
+                for product in products:
+                    # Extract product name and price
                     name_elements = product.find_elements(By.CSS_SELECTOR, 'div > div > div > div > h3 > a')
                     price_elements = product.find_elements(By.CSS_SELECTOR, 'div > div > div > div > span > strong')
+                    
                     if name_elements and price_elements:
                         name = name_elements[0].text if name_elements else "No Name"
                         price = self.clean_price(price_elements[0].text)  # Call clean_price method
                         product_data_asda.append({'store': 'Asda', 'name': name, 'price': price})
-
+                
+                # Save data to CSV and database
                 self.save_to_csv(product_data_asda, 'asda.csv')
-            except NoSuchElementException as e:
+            except (NoSuchElementException, TimeoutException) as e:
                 self.log.error(f"Error occurred while scraping Asda: {e}")
             finally:
                 driver.quit()
-
+            
             if product_data_asda:
                 try:
-                    self.save_to_database(product_data_asda)          
+                    self.save_to_database(product_data_asda)
                     self.log.info('Finished Asda scraping process')
-                except Exception as e:                    
+                except Exception as e:
                     self.log.error(f"Data not saved to database ERROR! {e}")
 
 

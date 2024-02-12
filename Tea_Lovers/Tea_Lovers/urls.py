@@ -26,11 +26,10 @@ urlpatterns = [
     path('', userarea_views.login_user, name='login'),  
     
     # user area urls (excluding the login view if it's now the root)
-    path('userarea/', include('userarea.urls')),              
+    path('userarea/', include('userarea.urls')),             
 
     # Asda urls
-    path('asda/', include('asda.urls')), 
-    path('', include('asda.urls')), 
+    path('asda/', include('asda.urls')),     
       
     # Tesco urls
     path('', include('tesco.urls')), 
@@ -39,8 +38,7 @@ urlpatterns = [
     path('', include('sainsburys.urls')), 
     
     # Morrisons urls
-    path('', include('morrisons.urls')), 
-    
+    path('', include('morrisons.urls')),     
     
     
     # Interface urls

@@ -1,0 +1,14 @@
+.basket-header {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+}
+
+.basket-image {
+    width: 80px;
+    height: 80px;
+    
+}
+
+
+
+

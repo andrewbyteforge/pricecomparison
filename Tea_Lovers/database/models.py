@@ -1,6 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+class Store(models.Model):
+    name = models.CharField(max_length=100)
+      
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
     store = models.CharField(max_length=100)
     name = models.CharField(max_length=255)
@@ -9,15 +16,16 @@ class Product(models.Model):
     class Meta:
         ordering = ['id']
 
-
     def __str__(self):
         return self.name
+
 
 class Basket(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='basket')
 
     def __str__(self):
         return f"Basket of {self.user.username}"
+
 
 class BasketItem(models.Model):
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE)

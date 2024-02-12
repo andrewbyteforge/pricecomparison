@@ -11,7 +11,7 @@
 
 
 /* ********************************************************************* */
-/* Logged in as********************************************************* */
+/* Logged in as and welcome message************************************* */
 /* ********************************************************************* */
 .logged-in-info {
     margin-left: 4px;
@@ -27,7 +27,10 @@
 
 
 .custom-padding {
-    padding: 5px; /* Adds 5px of space around the content inside the container */
+    padding: 15px; /* Adds 5px of space around the content inside the container */
+}
+.store-table {
+    display: none;
 }
 
 
@@ -36,6 +39,9 @@
 /* ********************************************************************* */
 /* Table display results************************************************ */
 /* ********************************************************************* */
+
+
+/* Below 768px, the tables will automatically take full width due to the nature of block elements */
 
 
 /* # Empty as this element uses inline styling and bootstrap  */

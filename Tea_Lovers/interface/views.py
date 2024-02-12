@@ -1,227 +1,159 @@
 from .forms import SearchForm
 from database.models import Product, BasketItem
-
-from asda.asda import AsdaScraper
-from tesco.tesco import TescoScraper
-from sainsburys.sainsburys import SainsburysScraper
-from morrisons.morrisons import MorrisonsScraper
-
-from loggingapp.custom_logging import Logger
-import logging
-
-import threading
-import time
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
+from django.db.models import Q
+
+
+import logging
 
 # Logger instance
 logger = logging.getLogger(__name__)
 
-def run_asda_scraper(search_query: str, max_retries=3):
+
+class ProductPagination:
     """
-    This function is used to start a new thread for running the ASDA Scraper and returns the results in JSON format. 
+    A utility class for paginating a queryset of products.
 
-    Params:
-    search_query is the inputted data
-    max_retries is the amount of times the function will try again.   
+    This class provides a static method to paginate a list of products based on the specified number
+    of items per page and the current page number obtained from the request's GET parameters.
 
-    Exception:
-    If there are any errors in running the scrape it will retry for a maximum of 3 attempts before stopping.
+    Parameters:
+        products (QuerySet): The queryset of products to paginate.
+        items_per_page (int): The number of products to display per page.
+        request (HttpRequest): The HTTP request object containing the page number in its GET parameters.
 
     Returns:
-    A list containing all products found from the search query.
-    """
-    retries = 0
-    while retries < max_retries:
+        Page: A Page object containing the products for the requested page.
+
+    Usage:
+        paginator = ProductPagination()
+        page_number = request.GET.get('page', 1)
+        products = Product.objects.all()  # Query your products here
+        paginated_page = paginator.paginate_products(products, items_per_page, request)
+    """  
+    @staticmethod
+    def paginate_products(products, items_per_page, request):
+        # Log the start of pagination process
+        logger.info("Starting pagination of products.")
+
+        # Create a paginator instance
+        paginator = Paginator(products, items_per_page)
+
+        # Get the current page number from the request's GET parameters, default to 1
+        page_number = request.GET.get('page', 1)
+        logger.debug(f"Fetching page {page_number}.")
+
+        # Attempt to return the Page object for the requested page
         try:
-            asda_scraper = AsdaScraper(search_query)
-            asda_scraper.scrape()
-            break  # If scrape is successful, exit the loop
-        except ConnectionError as e:
-            retries += 1
-            Logger().logger.error(
-                f"Retry {retries}/{max_retries} for Asda scraper failed: {e}")
-            time.sleep(5)
-            if retries >= max_retries:
-                Logger().logger.error("Max retries reached for Asda scraper")
+            page = paginator.get_page(page_number)
+            return page
+        except Exception as e:
+            # Log any errors that occur during pagination
+            logger.error(f"Error during pagination: {e}", exc_info=True)
+            return None
 
-def run_tesco_scraper(search_query: str, max_retries=3):
-    """
-    This function is used to start a new thread for running the ASDA Scraper and returns the results in JSON format. 
-
-    Params:
-    search_query is the inputted data
-    max_retries is the amount of times the function will try again.   
-
-    Exception:
-    If there are any errors in running the scrape it will retry for a maximum of 3 attempts before stopping.
-
-    Returns:
-    A list containing all the products found by the scraping process.
-    """
-    retries = 0
-    while retries < max_retries:
-        try:
-            tesco_scraper = TescoScraper(search_query)
-            tesco_scraper.scrape()
-            break  # If scrape is successful, exit the loop
-        except ConnectionError as e:
-            retries += 1
-            Logger().logger.error(
-                f"Retry {retries}/{max_retries} for Tesco scraper failed: {e}")
-            time.sleep(5)
-            if retries >= max_retries:
-                Logger().logger.error("Max retries reached for Tesco scraper")
-
-def run_sainsburys_scraper(search_query: str, max_retries=3):
-    """
-    This function is used to start a new thread for running the ASDA Scraper and returns the results in JSON format. 
-
-    Params:
-    search_query is the inputted data
-    max_retries is the amount of times the function will try again.   
-
-    Exception:
-    If there are any errors in running the scrape it will retry for a maximum of 3 attempts before stopping.
-
-    Returns:
-    A list containing all the products found by the scraping process.
-    """
-    retries = 0
-    while retries < max_retries:
-        try:
-            sainsburys_scraper = SainsburysScraper(search_query)
-            sainsburys_scraper.scrape()
-            break  # If scrape is successful, exit the loop
-        except ConnectionError as e:
-            retries += 1
-            Logger().logger.error(
-                f"Retry {retries}/{max_retries} for Sainsburys scraper failed: {e}")
-            time.sleep(5)
-            if retries >= max_retries:
-                Logger().logger.error("Max retries reached for Sainsburys scraper")
-                
-def run_morrisons_scraper(search_query: str, max_retries=3):
-    """
-    This function is used to start a new thread for running the Morrisons Scraper and returns the results in JSON format. 
-
-    Params:
-    search_query is the inputted data
-    max_retries is the amount of times the function will try again.   
-
-    Exception:
-    If there are any errors in running the scrape it will retry for a maximum of 3 attempts before stopping.
-
-    Returns:
-    A list containing all products found from the search query.
-    """
-    retries = 0
-    while retries < max_retries:
-        try:
-            morrisons_scraper = MorrisonsScraper(search_query)
-            morrisons_scraper.scrape()
-            break  # If scrape is successful, exit the loop
-        except ConnectionError as e:
-            retries += 1
-            Logger().logger.error(
-                f"Retry {retries}/{max_retries} for Morrisons scraper failed: {e}")
-            time.sleep(5)
-            if retries >= max_retries:
-                Logger().logger.error("Max retries reached for Morrisons scraper")
-
-@login_required
-def show_products(request):
-    form = SearchForm(request.POST or None)
-    search_query = request.GET.get('query', '')
-    context = {'form': form, 'search_query': search_query}
-    user_basket_items = []
-    try:
-        if request.method == "POST" and form.is_valid():
-            search_query = form.cleaned_data['search_query']
-            if not search_query:
-                return redirect('show_products')
-            search_terms = [term.strip() for term in search_query.split(',')]           
-            threads = []
-            for term in search_terms:
-                threads.append(threading.Thread(target=run_asda_scraper, args=(term,)))
-                threads.append(threading.Thread(target=run_tesco_scraper, args=(term,)))
-                threads.append(threading.Thread(target=run_sainsburys_scraper, args=(term,)))
-                threads.append(threading.Thread(target=run_morrisons_scraper, args=(term,)))
-            for thread in threads:
-                thread.start()
-            for thread in threads:
-                thread.join()
-            return redirect(f'/products/?query={search_query}')        
-
-        tesco_total = sum(item.product.price for item in user_basket_items if item.product.store == 'Tesco')
-        asda_total = sum(item.product.price for item in user_basket_items if item.product.store == 'Asda')
-        sainsburys_total = sum(item.product.price for item in user_basket_items if item.product.store == 'Sainsburys')   
-        morrisons_total = sum(item.product.price for item in user_basket_items if item.product.store == 'Morrisons')  
+class ProductView:   
+    @staticmethod
+    def get_paginated_products_for_store(store_name, search_query, page_number, items_per_page=5):
         
-        tesco_products = Product.objects.filter(store='Tesco', name__icontains=search_query).order_by('id')
-        asda_products = Product.objects.filter(store='Asda', name__icontains=search_query).order_by('id')
-        sainsburys_products = Product.objects.filter(store='Sainsburys', name__icontains=search_query).order_by('id')
-        morrisons_products = Product.objects.filter(store='Sainsburys', name__icontains=search_query).order_by('id')
+        # Log the start of the product retrieval and pagination process
+        logger.info(f"Fetching paginated products for store: {store_name} with search query: '{search_query}'")
+        
+        # name__icontains=search_query case sensitive partial matches
+        products = Product.objects.filter(store=store_name, name__icontains=search_query).order_by('id')
+        
+        # Log the number of products found before pagination
+        logger.debug(f"Found {products.count()} products matching criteria.")
 
-        items_per_page = 20  # 5 items from each store
-        ordered_queryset = tesco_products.union(asda_products, sainsburys_products, morrisons_products, all=True).order_by('id')
-        paginator = Paginator(ordered_queryset, items_per_page)
-        current_page = request.GET.get('page', 1)
-        page_items = paginator.get_page(current_page)
-
-        start_index = (page_items.number - 1) * 5
-        end_index = start_index + 5
-        tesco_page_items = tesco_products[start_index:end_index]
-        asda_page_items = asda_products[start_index:end_index]
-        sainsburys_page_items = sainsburys_products[start_index:end_index]
-        morrisons_page_items = morrisons_products[start_index:end_index]
-
-        if request.user.is_authenticated:
-            user_basket_items = BasketItem.objects.filter(basket__user=request.user)            
-            # Calculate the total prices for each store
-            tesco_total = sum(item.product.price for item in user_basket_items if item.product.store == 'Tesco')
-            asda_total = sum(item.product.price for item in user_basket_items if item.product.store == 'Asda')
-            sainsburys_total = sum(item.product.price for item in user_basket_items if item.product.store == 'Sainsburys')
-            morrisons_total = sum(item.product.price for item in user_basket_items if item.product.store == 'Morrisons')
-        else:
-            user_basket_items = []
-            tesco_total = asda_total = sainsburys_total = 0            
-
-        context.update({
-            'morrisons_total': morrisons_total,
-            'sainsburys_total': sainsburys_total,
-            'asda_total': asda_total,
-            'tesco_total': tesco_total,
+        paginator = Paginator(products, items_per_page)
+        
+        # Attempt to paginate and catch any potential errors
+        try:
+            paginated_page = paginator.get_page(page_number)
+            logger.info(f"Returning page {page_number} of paginated products.")
+            return paginated_page
+        except Exception as e:
+            logger.error(f"Error during pagination: {e}", exc_info=True)
+            # Depending on your error handling strategy, you might return an empty page, raise the exception, etc.
+            return None
             
-            'tesco_products': tesco_page_items,
-            'asda_products': asda_page_items,
-            'sainsburys_products': sainsburys_page_items,
-            'morrisons_products': morrisons_page_items,
+    @staticmethod
+    def show_products(request):
+        logger.info("Showing products with potential search query.")
+        form = SearchForm(request.GET or None)
+        page_number = request.GET.get('page', 1)  
+        
+        # search query by user and checkbox store        
+        search_query = request.GET.get('search_query', '')
+        selected_stores = request.GET.getlist('store')      
+        # Define items_per_page
+        items_per_page = 5 
+        
+        # Initialize a dictionary to hold paginated products from each store
+        paginated_products = {}
+        
+        # start with an empty query
+        products = Product.objects.none()  
+         # Fetch products for all selected stores
+        if 'Tesco' in selected_stores:
+             products |= Product.objects.filter(store='Tesco', name__icontains=search_query)
+        if 'Asda' in selected_stores:
+             products |= Product.objects.filter(store='Asda', name__icontains=search_query)
+        if 'Morrisons' in selected_stores:
+             products |= Product.objects.filter(store='Morrisons', name__icontains=search_query)
+        if 'Sainsburys' in selected_stores:
+             products |= Product.objects.filter(store='Sainsburys', name__icontains=search_query)
+
+        # # Fetch and paginate products for each store
+        tesco_products = ProductView.get_paginated_products_for_store('Tesco', search_query, page_number, items_per_page)
+        asda_products = ProductView.get_paginated_products_for_store('Asda', search_query, page_number, items_per_page)
+        sainsburys_products = ProductView.get_paginated_products_for_store('Sainsburys', search_query, page_number, items_per_page)
+        morrisons_products = ProductView.get_paginated_products_for_store('Morrisons', search_query, page_number, items_per_page)
+
+        # # Combine all products
+        # all_products = tesco_products, asda_products, sainsburys_products, morrisons_products
+        
+        # Pass Paginator object to template context
+        # Now paginate this combined queryset
+        paginator = Paginator(products.order_by('id'), items_per_page)
+        page_number = request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
             
-            'list_per_page': page_items,
-            'user_basket_items': user_basket_items,            
-        })
-    except Exception as e:
-        logger.error(f"Error in show_products view: {e}", exc_info=True)
-    return render(request, 'interface/products.html', context)
+        
+        
+        selected_stores = request.GET.getlist('store')    
+        
+        context = {
+            'form': form,            
+            'search_query': search_query,
+            'selected_stores': selected_stores,        
+        
+            'tesco_products': tesco_products,
+            'asda_products': asda_products,
+            'sainsburys_products': sainsburys_products,
+            'morrisons_products': morrisons_products,    
+                                   
+            'page_obj': page_obj,  
+        }
 
-@login_required
-def empty_basket(request):
-    if request.method == "POST":
-        BasketItem.objects.filter(basket__user=request.user).delete()        
-        return redirect('/products/')    
-    return redirect('home')
-
-
-def basket(request):      
-    return render(request, 'basket.html')
-
-def pagination(request):      
-    return render(request, 'pagination.html')
+        return render(request, 'interface/products.html', context)
 
 
+class BasketView:
+    @staticmethod
+    @login_required
+    def empty_basket(request):
+        if request.method == "POST":
+            items_deleted = BasketItem.objects.filter(basket__user=request.user).delete()
+            logger.info(f"User {request.user.username} emptied their basket, {items_deleted[0]} items deleted.")
+            return redirect('/products/')
+        logger.warning(f"User {request.user.username} attempted to empty basket via a non-POST request.")
+        return redirect('home')
 
-
-
+    @staticmethod
+    def basket(request):
+        logger.info(f"User {request.user.username if request.user.is_authenticated else 'Anonymous'} accessed the basket page.")
+        return render(request, 'basket.html')
 

@@ -5,8 +5,9 @@ from .models import Product
 from loggingapp.custom_logging import Logger
 from django.shortcuts import render
 from interface.forms import SearchForm
+import logging
 
-
+logger = logging.getLogger(__name__)
 
 
 def display_database(request):
@@ -18,12 +19,12 @@ def display_database(request):
         'search_query': None  
     })
 
-# Delete all entries in the database.
 def delete_all_entries(request):
-    log = Logger().logger
+    print("delete_all_entries view was called.")  # Add this line for debugging
     if request.method == 'POST':
         Product.objects.all().delete()
-        log.info("All entries have been successfully deleted.")        
-    return redirect(reverse('show_products'))
+        logger.info("All entries have been successfully deleted.")
+    return redirect('show_products')
+
 
 

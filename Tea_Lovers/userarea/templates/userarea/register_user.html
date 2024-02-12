@@ -3,44 +3,58 @@
 {% block content %}
 
 {% if form.errors %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        There was an error with your form *
-    </div>
-{% endif %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    There was an error with your form *
+</div>
+{% else %}
 <br>
 <br>
 <br>
-<br>
-<br>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <br>
-                <br>
-                <h1>Register</h1> <!-- Moved inside the same div as the form -->
-                <br>
-                <div class="shadow p-3 mb-5 bg-body rounded">
-                    <form action="{% url 'register_user' %}" method="POST">
-                        {% csrf_token %}
-                        {{ form.as_p }}                         
-                        <div class="buttons">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="{% url 'login' %}" class="btn btn-warning">Back</a>
-                        </div>
-                    </form>
-                </div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <br>
+            <br>
+            <h1>Register</h1>
+            <div>
+                <p>Current number of registered users: <b>{{ user_count }}</b></p>
+                <p>Maximum registered users <b>3</b></p>
             </div>
+            <br>
+            {% if registration_limit_reached %}
+            <div class="alert alert-danger" role="alert">
+                Registration limit has been reached. You cannot register at this time.
+            </div>
+            {% else %}
+            <div class="shadow p-3 mb-5 bg-body rounded">
+                <form action="{% url 'register_user' %}" method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="buttons">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a href="{% url 'login' %}" class="btn btn-warning">Back</a>
+                    </div>
+                </form>
+            </div>
+
+
+            {% endif %}
+            {% endif %}
         </div>
-        <br><br><br><br>     
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert {{ message.tags }}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-        <br><br>
     </div>
+    <br><br><br><br>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <br><br>
+</div>
 <!-- Bootstrap JS Bundle -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js" integrity="sha384-oesi62hoyj7gnaoa14lfkndayc6o6elbb0d23yd+pbQfUf5o5hptc9whoh8pOJy5" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"
+    integrity="sha384-oesi62hoyj7gnaoa14lfkndayc6o6elbb0d23yd+pbQfUf5o5hptc9whoh8pOJy5"
+    crossorigin="anonymous"></script>
 {% endblock %}

@@ -33,16 +33,26 @@
  * real-time update of the basket contents and total price calculation.
  */
 
+// *************************************************************************
 // Function to add an item to the basket when the user clicks the add button
-function addToBasket(element) {
+// *************************************************************************
+function addToBasket(element) { 
+    console.log('addToBasket function called', element);  
     // Get the store, name, and price from the data attributes of the clicked element
     var store = element.getAttribute('data-store');
     var name = element.getAttribute('data-name');
-    var price = element.getAttribute('data-price');
+    var price = element.getAttribute('data-price');  
 
-    
-
-    
+    const payload = { store: store, name: name, price: price };
+    console.log("Sending payload:", payload);
+    fetch('/asda/add_to_basket/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(payload)
+    });
 
     // Send a POST request to the server to add the item to the basket
     fetch('/asda/add_to_basket/', {
@@ -57,19 +67,18 @@ function addToBasket(element) {
         body: JSON.stringify({store: store, name: name, price: price})
     })
     .then(response => {
-        // Check if the response from the server is not successful
         if (!response.ok) {
-            // If not successful, throw an error
             throw new Error('Network response was not ok');
         }
-        // If successful, parse the JSON body of the response
-        location.reload();
-        return response.json();
+        return response.json(); // Wait to parse the response
     })
     .then(data => {
         if (data && data.store && data.name && data.price && data.itemId) {
-            // Update the UI with the new item, including the itemId
-            updateBasketUI(data.store, data.name, data.price, data.itemId);
+            updateBasketUI(data.store, data.name, data.price, data.itemId); // Update UI
+            // Add to local storage
+            let basket = JSON.parse(localStorage.getItem('basket') || '[]');
+            basket.push({ store: data.store, name: data.name, price: data.price, itemId: data.itemId });
+            localStorage.setItem('basket', JSON.stringify(basket));
         } else {
             console.error("Invalid or missing data from server:", data);
         }
@@ -80,51 +89,153 @@ function addToBasket(element) {
     });
 }
 
-// Function to remove an item from the basket and recalculate total price
-function removeItemFromBasket(buttonElement) {
-    console.log("removeItemFromBasket called");
+// **********************************************************************
+// Function to remove an item from the basket 
+// **********************************************************************
+// function removeItemFromBasket(element) {
+//     const itemId = element.getAttribute('data-item-id'); // Correctly obtaining the item ID
     
-    var itemId = buttonElement.getAttribute('data-item-id');
-    console.log("Item ID:", itemId);
+//     // Correctly specify the endpoint and include CSRF token
+//     fetch('/asda/remove_from_basket/', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'X-CSRFToken': getCookie('csrftoken'), // Ensure CSRF token is correctly included
+//         },
+//         body: JSON.stringify({ item_id: itemId })
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error(`Network response was not ok: ${response.statusText}`);
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         if (data.success) {
+//             // Correctly use `element` to refer to the button that was clicked
+//             element.closest('tr').remove(); // Remove the item from the UI
+//             recalculateTotalPrice(); // Update total price accordingly
+//         } else {
+//             console.error("Failed to remove item: ", data.error || 'Unknown error');
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//     });
+// }
 
-    if (!itemId) {
-        console.error("Item ID is not provided or invalid.");
+function updateNoItemsRowVisibility() {
+    // Check if there are any rows for Asda items
+    const asdaItemsExist = document.querySelectorAll('#asda-basket tbody tr').length > 0;
+    const noItemsRow = document.getElementById('no-items-row');
+    
+    if (asdaItemsExist) {
+        // If there are Asda items, ensure the "No items" row is hidden
+        if (noItemsRow) noItemsRow.style.display = 'none';
+    } else {
+        // If there are no Asda items, show the "No items" row
+        if (noItemsRow) noItemsRow.style.display = '';
+    }
+}
+
+// Call this function after any operation that adds or removes items
+updateNoItemsRowVisibility();
+
+
+
+function removeItemFromBasket(itemId) {
+    // Remove the item from local storage
+    var basket = JSON.parse(localStorage.getItem('basket') || '[]');
+    var newBasket = basket.filter(function(item) {
+        return item.itemId !== itemId;
+    });
+    localStorage.setItem('basket', JSON.stringify(newBasket));
+
+    // Optionally, make a server request here to sync the state
+
+    // Reload the basket from local storage to reflect changes in the UI
+    loadBasketFromLocalStorage();
+}
+
+
+
+
+
+// **********************************************************************
+// Function to update the basket UI with a new item
+// **********************************************************************
+function updateBasketUI(store, name, price, itemId) {
+    if (!store || !name || !price || !itemId) {
+        console.error('Invalid input parameters provided to updateBasketUI');
         return;
     }
 
-    fetch('/asda/remove_from_basket/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
-        },
-        body: JSON.stringify({ 'item_id': itemId })
-    })
-    .then(response => {
-        if (!response.ok) {
-            console.error(`Server responded with status: ${response.status}`);
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            buttonElement.closest('tr').remove();
-            recalculateTotalPrice();
-            showAlert('alert-info', "The product has been successfully removed from your basket!");
-        
+    var basketTableBody = document.getElementById('asda-basket')?.getElementsByTagName('tbody')[0];
+    if (!basketTableBody) {
+        console.error('Basket table body not found');
+        return;
+    }
 
-            // Call the function to update the total price from the server
-            fetchUpdatedTotalPrice();           
-        } else {
-            console.error("Failed to remove item: ", data.error || 'Unknown error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
+    try {
+        // Add a new row at the end of the basket table
+        var newRow = basketTableBody.insertRow(-1);
+
+        // Insert cell for the item name
+        var nameCell = newRow.insertCell(0);
+        nameCell.textContent = name;
+
+        // Insert cell for the price
+        var priceCell = newRow.insertCell(1);
+        priceCell.textContent = `£${price}`;
+
+        // Insert cell for the remove button
+        var removeButtonCell = newRow.insertCell(2);
+        var removeButton = createRemoveButton(itemId, store); 
+        removeButtonCell.appendChild(removeButton);
+    document.getElementById('no-items-row').style.display = 'none';
+
+    } catch (error) {
+        console.error('Error updating basket UI:', error);
+    }
+}
+
+
+// *************************************************************************
+// Functions remove button setup
+// *************************************************************************
+function setupRemoveButton(buttonElement, itemId) {
+    buttonElement.addEventListener('click', () => {
+        removeItemFromLocalStorage(itemId);        
     });
 }
 
+// *************************************************************************
+// Create an HTML button that removes an item with the given id from the user's basket
+// *************************************************************************
+function createPriceSpan(className, price) {
+    var span = document.createElement('span');
+    span.className = className;
+    span.textContent = price;
+    return span;
+}
+
+// *************************************************************************
+// Returns a button element which, when clicked, will remove the specified item from the user's
+// *************************************************************************
+function createRemoveButton(itemId, store) {
+    var button = document.createElement('button');
+    button.className = 'btn btn-danger btn-sm';
+    button.textContent = 'REMOVE';
+    button.setAttribute('data-item-id', itemId);
+    button.setAttribute('data-store', store);
+    button.onclick = function() { removeItemFromBasket(this); };
+    return button;
+}
+
+
+// **********************************************************************
+// Update total Price
+// **********************************************************************
 function fetchUpdatedTotalPrice() {
     $.ajax({
         url: '/asda/get_updated_total/',
@@ -138,84 +249,9 @@ function fetchUpdatedTotalPrice() {
     });
 }
 
-
-
-// Function to update the basket UI with a new item
-function updateBasketUI(store, name, price, itemId) {
-    // Input validation
-    if (!store || !name || !price || !itemId) {
-        console.error('Invalid input parameters provided to updateBasketUI');
-        return;
-    }
-
-    // Reference to the basket table body
-    var basketTableBody = document.getElementById('basket')?.getElementsByTagName('tbody')[0];
-    if (!basketTableBody) {
-        console.error('Basket table body not found');
-        return;
-    }
-
-    try {
-        // Add a new row at the end of the basket table
-        var newRow = basketTableBody.insertRow(-1);
-
-        // Create and append cells to the new row
-        for (var i = 0; i < 6; i++) {
-            var cell = newRow.insertCell(i);
-            if (store === 'Tesco' && i === 1) {
-                cell.appendChild(createPriceSpan('tesco-price', price));
-                cell.appendChild(createRemoveButton(itemId, 'Tesco'));
-            } else if (store === 'Asda' && i === 3) {
-                cell.appendChild(createPriceSpan('asda-price', price));
-                cell.appendChild(createRemoveButton(itemId, 'Asda'));
-            } else if (store === 'Sainsburys' && i === 5) {
-                cell.appendChild(createPriceSpan('sainsburys-price', price));
-                cell.appendChild(createRemoveButton(itemId, 'Sainsburys'));
-            }
-        }
-
-        // Set the name in the corresponding cell based on the store
-        if (store === 'Tesco') {
-            newRow.cells[0].textContent = name;
-        } else if (store === 'Asda') {
-            newRow.cells[2].textContent = name;
-        } else if (store === 'Sainsburys') {
-            newRow.cells[4].textContent = name;
-        }
-
-        // Update the total price
-        if (typeof updateTotalPrice === 'function') {
-            updateTotalPrice(store, parseFloat(price));
-        } else {
-            console.error('updateTotalPrice is not a function');
-        }
-    } catch (error) {
-        console.error('Error updating basket UI:', error);
-    }
-}
-
-function createPriceSpan(className, price) {
-    var span = document.createElement('span');
-    span.className = className;
-    span.textContent = price;
-    return span;
-}
-
-function createRemoveButton(itemId, store) {
-    var button = document.createElement('button');
-    button.className = 'btn btn-danger btn-sm';
-    button.textContent = 'REMOVE';
-    button.setAttribute('data-item-id', itemId);
-    button.setAttribute('data-store', store);
-    button.onclick = function() { removeItemFromBasket(this); };
-    return button;
-}
-
-
-
-
-
+// *************************************************************************
 // Function to recalculate the total price of items in the shopping basket
+// *************************************************************************
 function recalculateTotalPrice() {
     let tescoTotalPrice = 0, asdaTotalPrice = 0, sainsburysTotalPrice = 0;
 
@@ -241,8 +277,9 @@ function recalculateTotalPrice() {
 }
 
 
-
+// *************************************************************************
 // Function to update the total price for a specific store
+// *************************************************************************
 function updateTotalPrice(store, priceChange) {
     // Retrieve the total price element for the specified store from the DOM
     // The 'store' variable is expected to be the name of the store (e.g., 'Tesco', 'Asda', 'Sainsburys')
@@ -278,8 +315,9 @@ function updateTotalPrice(store, priceChange) {
     // 'toFixed(2)' formats the number to two decimal places, representing pounds and pence
 
 
-
+// *************************************************************************
 // Helper function to get the value of a specified cookie by name
+// *************************************************************************
 function getCookie(name) {
     // Initialize cookieValue as null, it will store the value of the cookie if found
     let cookieValue = null;
@@ -305,3 +343,38 @@ function getCookie(name) {
     // Return the value of the cookie, or null if the cookie was not found
     return cookieValue;
 }
+
+
+
+// *************************************************************************
+function loadBasketFromLocalStorage() {
+    // Retrieve the basket from local storage
+    var basket = JSON.parse(localStorage.getItem('basket') || '[]');
+    var basketTableBody = document.getElementById('asda-basket').getElementsByTagName('tbody')[0];
+
+    // Clear the current basket UI
+    basketTableBody.innerHTML = '';
+
+    // Iterate over the basket items and add them to the UI
+    basket.forEach(function(item) {
+        var row = basketTableBody.insertRow();
+        var nameCell = row.insertCell(0);
+        var priceCell = row.insertCell(1);
+        var removeButtonCell = row.insertCell(2);
+        nameCell.textContent = item.name;
+        priceCell.textContent = `£${item.price}`;
+        
+        // Create a remove button for each item
+        var removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.className = 'btn btn-danger';
+        removeButton.onclick = function() {
+            // Functionality to remove item from basket
+            removeItemFromBasket(item.itemId);
+        };
+        removeButtonCell.appendChild(removeButton);
+    });
+}
+
+// Call this function when the document is fully loaded
+document.addEventListener('DOMContentLoaded', loadBasketFromLocalStorage);
