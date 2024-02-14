@@ -22,7 +22,6 @@
                     <p class="logged-in-info" style="margin-bottom: 0;">Logged in as <b>{{ user.username }}</b>
                         &#128512;</p>
                 </div>
-
                 <!-- Flex Container for Teabag Image and Logout Button -->
                 <div style="display: flex; align-items: center; justify-content: flex-end;">
                     <!-- Teabag Image -->
@@ -118,7 +117,7 @@
                 <!-- ********************************************************************************** -->
                 <div class="database-actions" style="padding-top: 20px;">
                     <!-- Delete DB Form -->
-                    <form action="{% url 'delete_all_entries' %}" method="post" style="display: inline-block;">
+                    <form action="{% url 'delete_all_entries' %}" method="post" style="display: inline-block; margin-left:10px; margin-bottom:10px;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger btn shadow fs-6">Delete db</button>
                     </form>

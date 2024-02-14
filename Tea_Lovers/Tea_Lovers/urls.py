@@ -23,11 +23,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),    
     
     # Set the root URL to the login view
-    path('', userarea_views.login_user, name='login'),  
-    
+    path('', userarea_views.login_user, name='login'),     
     # user area urls (excluding the login view if it's now the root)
-    path('userarea/', include('userarea.urls')),             
-
+    path('userarea/', include('userarea.urls')), 
+    
+    path('', include('loggingapp.urls')),               
+    
     # Asda urls
     path('asda/', include('asda.urls')),     
       
@@ -44,6 +45,7 @@ urlpatterns = [
     # Interface urls
     path('interface/', include('interface.urls')),
     path('products/', include('interface.urls')),
+    
     
     # database urls 
     path('database/', include('database.urls')), 

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'interface',
     'scraper',
     'userarea',
+    'loggingapp',
     
     
     
@@ -143,9 +144,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'interface', 'static')]
 
 
 
-
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -157,5 +155,35 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Set session cookies to expire after 2 weeks
-SESSION_COOKIE_AGE = 1209600  # 2 weeks, in seconds
+SESSION_COOKIE_AGE = 120960 # (1.4 days), 1 day=86400 sec; 2 weeks=120960 sec
+
+import os
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file_userarea': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'userarea.log',
+            'formatter': 'standard',
+        },
+        # Other handlers...
+    },
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        },
+    },
+    'loggers': {
+        'userarea': {  # Use this logger name in your application
+            'handlers': ['file_userarea'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        # Other loggers...
+    },
+}
+
 

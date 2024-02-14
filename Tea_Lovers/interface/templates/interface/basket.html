@@ -24,10 +24,11 @@
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-warning btn shadow">LOGOUT</button>
                             </form>
-                            <form action="{% url 'empty_basket' %}" method="post" class="mb-4">
+                            <form id="empty-basket-form" action="{% url 'empty_basket' %}" method="post" class="mb-4">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-danger btn shadow fs-6">Empty Basket</button>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -73,7 +74,7 @@
                                 <td class="d-flex justify-content-between">
                                     <div class="price-container">
                                         <span class="asda-price">{{ item.product.price }}</span>
-                                        <button class="btn btn-danger btn-sm btn shadow" data-item-id="{{ item.id }}"
+                                        <button class="btn btn-danger btn-sm btn shadow"  data-item-id="{{ item.id }}"
                                             data-store="Asda" data-price="{{ item.product.price }}"
                                             onclick="removeItemFromBasket(this)">REMOVE</button>
                                     </div>
@@ -89,7 +90,7 @@
                         <tfoot>
                             <tr>
                                 <td>Total</td>
-                                <td id="asda-total">£{{ asda_total|default:"0.00" }}</td>
+                                <td id="asda-total">£{{ asda_total_price|default:"0.00" }}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -115,7 +116,7 @@
                     <h3 class="px-2">Tesco Shopping Basket</h3>
                     <img src="{% static 'images/basket.png' %}" alt="Basket" class="basket-image">
                 </div>
-                <div class="table-responsive">                    
+                <div class="table-responsive">
                     <table class="table table-bordered" id="tesco-basket">
                         <thead>
                             <tr>

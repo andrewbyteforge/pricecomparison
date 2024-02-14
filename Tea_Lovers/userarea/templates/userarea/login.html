@@ -1,30 +1,34 @@
 {% extends 'interface/base.html' %}
 {% load static %}
 {% block content %}
-
+<br>
+<br>
 <div class="container mt-1">
   <div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-6"> <!-- Adjust column sizes as needed -->
-      <img src="{% static 'images/teabags_hugging.png' %}" alt="Tea Bag Image" class="img-fluid mb-3 image-top">
-      <div class="card my-3">
+    <div class="col-12 col-md-8 col-lg-6"> 
+      <img src="{% static 'images/teabags_hugging.png' %}" alt="Tea Bag Image" class="img-fluid image-top mb-3">
+      <br>
+      <br>
+      <br>
+      <div class="card mb-3">
         <h5 class="card-header">Login</h5>
         <div class="card-body">
           {% if messages %}
-            {% for message in messages %}
-              {% if message.tags == 'success' %}
-                <div class="alert alert-danger">
-                  {{ message }}
-                </div>
-              {% elif message.tags == 'error' %}
-                <div class="alert alert-danger">
-                  {{ message }}
-                </div>
-              {% endif %}
-            {% endfor %}
+          {% for message in messages %}
+          {% if message.tags == 'success' %}
+          <div class="alert alert-danger">
+            {{ message }}
+          </div>
+          {% elif message.tags == 'error' %}
+          <div class="alert alert-danger">
+            {{ message }}
+          </div>
+          {% endif %}
+          {% endfor %}
           {% endif %}
           <form action="" method="POST">
             {% csrf_token %}
-            <div class="mb-3">
+            <div class="mb-1 mt-3">
               <label for="username" class="form-label">Username</label>
               <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp">
             </div>
@@ -44,8 +48,9 @@
   </div>
 </div>
 
-<br/><br/>
+<br /><br />
 
 <!-- Bootstrap JS Bundle -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js" integrity="sha384-oesi62hoyj7gnaoa14lfkndayc6o6elbb0d23yd+pbQfUf5o5hptc9whoh8pOJy5" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"
+  integrity="sha384-oesi62hoyj7gnaoa14lfkndayc6o6elbb0d23yd+pbQfUf5o5hptc9whoh8pOJy5" crossorigin="anonymous"></script>
 {% endblock %}

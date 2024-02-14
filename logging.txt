@@ -1,0 +1,14 @@
+# Use this to log events in apps. Add name to identify app
+from loggingapp.custom_logging import Logger
+custom_logger = Logger('userarea').logger
+
+Then use the following at relevant points in code:
+
+custom_logger.info("this is custom_logger.info")  - for general info messages
+custom_logger.debug("This is a debug message")   - for detailed debugging information
+custom_logger.warning("This is a warning message")- for cautionary messages
+custom_logger.error("This is an error message")    - for error conditions
+custom_logger.critical("This is a critical error message")- system is unstable
+
+The logs will be saved as .log files with date and time stamps, in a folder
+

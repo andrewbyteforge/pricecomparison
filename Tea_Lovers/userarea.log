@@ -1,0 +1,50 @@
+2024-02-14 18:40:17,270 - userarea - INFO - Function login_user called
+2024-02-14 18:40:31,456 - userarea - INFO - Function login_user called
+2024-02-14 18:43:34,782 - userarea - INFO - Function login_user called
+2024-02-14 18:43:37,793 - userarea - INFO - Function login_user called
+2024-02-14 18:44:29,055 - userarea - INFO - Function login_user called
+2024-02-14 18:44:32,626 - userarea - INFO - Function login_user called
+2024-02-14 18:45:13,557 - userarea - INFO - Function login_user called
+2024-02-14 18:45:17,769 - userarea - INFO - Function login_user called
+2024-02-14 18:46:05,434 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:46:06,618 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:46:10,430 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:47:35,564 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:47:38,770 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:48:43,789 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:48:47,356 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:50:07,621 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:50:10,937 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:50:34,207 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:50:38,182 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:52:37,485 - userarea - INFO - User has been successfully logged out
+2024-02-14 18:52:37,494 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:53:19,009 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:53:22,666 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:54:18,343 - userarea - INFO - User has been successfully logged out
+2024-02-14 18:54:18,351 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:54:21,582 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:54:55,034 - userarea - INFO - User has been successfully logged out
+2024-02-14 18:54:55,043 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:54:57,617 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:55:00,275 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:55:00,640 - userarea - INFO - User authenticated
+2024-02-14 18:55:24,196 - userarea - INFO - User has been successfully logged out
+2024-02-14 18:55:24,198 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:55:29,270 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:55:29,625 - userarea - INFO - User admin5 authenticated
+2024-02-14 18:56:48,759 - userarea - INFO - User has been successfully logged out
+2024-02-14 18:56:48,768 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:56:58,192 - userarea - INFO - this is custom_logger.info
+2024-02-14 18:56:58,572 - userarea - INFO - User admin5 authenticated
+2024-02-14 18:56:58,586 - userarea - INFO - User admin5 on Quick Product Search part....
+2024-02-14 19:01:04,103 - userarea - INFO - this is custom_logger.info
+2024-02-14 19:01:14,056 - userarea - INFO - this is custom_logger.info
+2024-02-14 19:01:17,715 - userarea - INFO - this is custom_logger.info
+2024-02-14 19:01:18,080 - userarea - INFO - User admin5 authenticated
+2024-02-14 19:01:18,093 - userarea - INFO - User admin5 on Quick Product Search part....
+2024-02-14 19:03:14,028 - userarea - INFO - User has been successfully logged out
+2024-02-14 19:03:43,905 - userarea - INFO - User has been successfully logged out
+2024-02-14 19:04:41,440 - userarea - INFO - User has been successfully logged out
+2024-02-14 19:08:52,431 - userarea - INFO - User has been successfully logged out
+2024-02-14 19:09:37,561 - userarea - INFO - User has been successfully logged out

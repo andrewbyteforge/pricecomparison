@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.http import JsonResponse
+
 
 
 import logging
@@ -156,4 +158,40 @@ class BasketView:
     def basket(request):
         logger.info(f"User {request.user.username if request.user.is_authenticated else 'Anonymous'} accessed the basket page.")
         return render(request, 'basket.html')
+
+
+
+@login_required
+def calculate_asda_total(request):
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        try:
+            user_basket_items = BasketItem.objects.filter(basket__user=request.user, product__store='Asda')
+            if not user_basket_items.exists():
+                return JsonResponse({'total_price': 0.0})  # Explicitly return £0.00 if the basket is empty
+            total_price = sum(item.product.price * item.quantity for item in user_basket_items)
+            return JsonResponse({'total_price': float(total_price)})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'This endpoint requires an AJAX request.'}, status=400)
+
+
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+
+@login_required
+def get_basket_contents(request):
+    try:
+        basket_items = BasketItem.objects.filter(basket__user=request.user).select_related('product')
+        items_data = [{
+            'id': item.id,
+            'name': item.product.name,
+            'price': item.product.price,
+            'quantity': item.quantity,
+            'store': item.product.store,
+        } for item in basket_items]
+        return JsonResponse({'items': items_data, 'success': True})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
 

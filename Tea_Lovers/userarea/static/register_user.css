@@ -2,10 +2,11 @@
 .overlay {
     position: relative;
     z-index: 1;
-    background-color: rgba(0, 0, 0, 0.5); /* Adjust the background color and opacity as needed */
+    background-color: hsla(258, 63%, 22%, 0.5); /* Adjust the background color and opacity as needed */
     pointer-events: auto; /* Allow interaction with overlayed elements */
 }
 
 .form-disabled {
     pointer-events: none; /* Prevent interaction with the form */
 }
+
