@@ -1,0 +1,71 @@
+2024-02-16 10:08:09,832 - asda - INFO - item added to basket: PG Tips 40 Original Tea Bags 116g, ID:1938
+2024-02-16 10:08:16,638 - asda - INFO - item removed from basket: 1938
+2024-02-16 10:08:18,959 - asda - INFO - item removed from basket: 1937
+2024-02-16 10:08:19,687 - asda - INFO - item removed from basket: 1934
+2024-02-16 10:08:28,057 - asda - INFO - item added to basket: PG Tips 40 Original Tea Bags 116g, ID:1939
+2024-02-16 10:08:29,434 - asda - INFO - item removed from basket: 1939
+2024-02-16 10:34:07,477 - interface.views - INFO - Showing products with potential search query.
+2024-02-16 10:34:07,477 - interface.views - INFO - Fetching paginated products for store: Tesco with search query: ''
+2024-02-16 10:34:07,527 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:07,527 - interface.views - INFO - Fetching paginated products for store: Asda with search query: ''
+2024-02-16 10:34:07,529 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:07,529 - interface.views - INFO - Fetching paginated products for store: Sainsburys with search query: ''
+2024-02-16 10:34:07,532 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:07,532 - interface.views - INFO - Fetching paginated products for store: Morrisons with search query: ''
+2024-02-16 10:34:07,534 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:26,207 - interface.views - INFO - Showing products with potential search query.
+2024-02-16 10:34:26,207 - interface.views - INFO - Fetching paginated products for store: Tesco with search query: ''
+2024-02-16 10:34:26,274 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:26,274 - interface.views - INFO - Fetching paginated products for store: Asda with search query: ''
+2024-02-16 10:34:26,279 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:26,279 - interface.views - INFO - Fetching paginated products for store: Sainsburys with search query: ''
+2024-02-16 10:34:26,284 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:26,284 - interface.views - INFO - Fetching paginated products for store: Morrisons with search query: ''
+2024-02-16 10:34:26,289 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:29,280 - interface.views - INFO - Showing products with potential search query.
+2024-02-16 10:34:29,280 - interface.views - INFO - Fetching paginated products for store: Tesco with search query: ''
+2024-02-16 10:34:29,326 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:29,326 - interface.views - INFO - Fetching paginated products for store: Asda with search query: ''
+2024-02-16 10:34:29,328 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:29,328 - interface.views - INFO - Fetching paginated products for store: Sainsburys with search query: ''
+2024-02-16 10:34:29,330 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:29,330 - interface.views - INFO - Fetching paginated products for store: Morrisons with search query: ''
+2024-02-16 10:34:29,332 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:32,675 - interface.views - INFO - Showing products with potential search query.
+2024-02-16 10:34:32,675 - interface.views - INFO - Fetching paginated products for store: Tesco with search query: ''
+2024-02-16 10:34:32,719 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:32,719 - interface.views - INFO - Fetching paginated products for store: Asda with search query: ''
+2024-02-16 10:34:32,721 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:32,721 - interface.views - INFO - Fetching paginated products for store: Sainsburys with search query: ''
+2024-02-16 10:34:32,723 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:32,724 - interface.views - INFO - Fetching paginated products for store: Morrisons with search query: ''
+2024-02-16 10:34:32,726 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:51,245 - interface.views - INFO - Showing products with potential search query.
+2024-02-16 10:34:51,245 - interface.views - INFO - Fetching paginated products for store: Tesco with search query: ''
+2024-02-16 10:34:51,300 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:51,300 - interface.views - INFO - Fetching paginated products for store: Asda with search query: ''
+2024-02-16 10:34:51,304 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:51,304 - interface.views - INFO - Fetching paginated products for store: Sainsburys with search query: ''
+2024-02-16 10:34:51,308 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:34:51,308 - interface.views - INFO - Fetching paginated products for store: Morrisons with search query: ''
+2024-02-16 10:34:51,310 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:35:05,644 - interface.views - INFO - Showing products with potential search query.
+2024-02-16 10:35:05,645 - interface.views - INFO - Fetching paginated products for store: Tesco with search query: 'tea'
+2024-02-16 10:35:05,726 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:35:05,726 - interface.views - INFO - Fetching paginated products for store: Asda with search query: 'tea'
+2024-02-16 10:35:05,728 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:35:05,728 - interface.views - INFO - Fetching paginated products for store: Sainsburys with search query: 'tea'
+2024-02-16 10:35:05,730 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:35:05,731 - interface.views - INFO - Fetching paginated products for store: Morrisons with search query: 'tea'
+2024-02-16 10:35:05,732 - interface.views - INFO - Returning page 1 of paginated products.
+2024-02-16 10:35:08,666 - asda.views - INFO - item added to basket: PG Tips 40 Original Tea Bags 116g, ID:1940
+2024-02-16 10:35:09,137 - asda.views - INFO - item added to basket: PG Tips 40 Original Tea Bags 116g, ID:1941
+2024-02-16 10:35:10,687 - interface.views - INFO - Showing products with potential search query.
+2024-02-16 10:35:10,687 - interface.views - INFO - Fetching paginated products for store: Tesco with search query: 'tea'
+2024-02-16 10:35:10,732 - interface.views - INFO - Returning page 4 of paginated products.
+2024-02-16 10:35:10,732 - interface.views - INFO - Fetching paginated products for store: Asda with search query: 'tea'
+2024-02-16 10:35:10,734 - interface.views - INFO - Returning page 4 of paginated products.
+2024-02-16 10:35:10,734 - interface.views - INFO - Fetching paginated products for store: Sainsburys with search query: 'tea'
+2024-02-16 10:35:10,737 - interface.views - INFO - Returning page 4 of paginated products.
+2024-02-16 10:35:10,737 - interface.views - INFO - Fetching paginated products for store: Morrisons with search query: 'tea'
+2024-02-16 10:35:10,740 - interface.views - INFO - Returning page 4 of paginated products.

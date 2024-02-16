@@ -2,11 +2,9 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib import messages
 from .models import Product
-from loggingapp.custom_logging import Logger
 from django.shortcuts import render
 from interface.forms import SearchForm
 import logging
-
 logger = logging.getLogger(__name__)
 
 

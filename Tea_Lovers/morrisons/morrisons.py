@@ -2,10 +2,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait 
 from selenium.webdriver.support import expected_conditions as EC
-
-
 import csv
-from loggingapp.custom_logging import Logger
 from database.models import Product
 from interface.forms import SearchForm
 from scraper.config import FILE_CONFIG
@@ -19,7 +16,7 @@ class MorrisonsScraper:
     def __init__(self, search_term):
         from scraper.scraper import Scraper
         self.scraper = Scraper('url_morrisons', search_term)
-        self.log = Logger().logger
+        
 
     def scrape(self):
             self.log.info('Starting Morrisons scraping process')

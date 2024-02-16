@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'interface',
     'scraper',
     'userarea',
-    'loggingapp',
+    
     
     
     
@@ -163,13 +163,12 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'file_userarea': {
+        'all_apps_file_handler': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'userarea.log',
+            'filename': os.path.join(BASE_DIR, 'logs', 'all_apps.log'),  
             'formatter': 'standard',
         },
-        # Other handlers...
     },
     'formatters': {
         'standard': {
@@ -177,13 +176,33 @@ LOGGING = {
         },
     },
     'loggers': {
-        'userarea': {  # Use this logger name in your application
-            'handlers': ['file_userarea'],
+        'asda': {
+            'handlers': ['all_apps_file_handler'],
             'level': 'INFO',
             'propagate': True,
         },
-        # Other loggers...
+        'tesco': {
+            'handlers': ['all_apps_file_handler'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'sainsburys': {
+            'handlers': ['all_apps_file_handler'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'database': {
+            'handlers': ['all_apps_file_handler'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'interface': {
+        'handlers': ['all_apps_file_handler'],
+        'level': 'INFO',
+        'propagate': True,
+        },
     },
 }
+
 
 

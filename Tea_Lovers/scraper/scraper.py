@@ -3,10 +3,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
 import time
 import threading
-from loggingapp.custom_logging import Logger
+
 from .config import FILE_CONFIG
 from asda.asda import AsdaScraper
 from tesco.tesco import TescoScraper
@@ -18,7 +17,7 @@ class Scraper:
         self.store = store.capitalize()  # Capitalize store name for consistency
         base_url = FILE_CONFIG.get(self.store.lower())
         self.url = base_url.format(search_term)
-        self.log = Logger().logger
+      
         self.log.info(f"Initialized URL for {self.store} scraper: {self.url}")
         self.search_term = search_term
 

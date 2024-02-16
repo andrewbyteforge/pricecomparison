@@ -4,11 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from interface.forms import RegisterUserForm
 from django.contrib.auth.models import User
-
-# Use this to log events in apps. Add name to identify app
-from loggingapp.custom_logging import Logger
-custom_logger = Logger('userarea').logger
-
+import logging
+logger = logging.getLogger(__name__)
 #
 
 # ********************************THIS IS THE LOGIN**************
@@ -23,6 +20,7 @@ def login_user(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+        logger.info('This is an info message from userarea, user {username} logged in')
         
         if user is not None:
             login(request, user)
@@ -54,12 +52,12 @@ def logout_user(request):
     try:
         logout(request)
         messages.success(request, ('You were logged out'))
-        custom_logger.info('User has been successfully logged out')
+        logger.info('User has been successfully logged out')
         return redirect('login_user/')
     except Exception as e:
-        custom_logger.info(
+        logger.info(
             f'the following user caused an error when logged out: {logout_user}')
-        custom_logger.info(f'Error logging out, please try again {e}')
+        logger.info(f'Error logging out, please try again {e}')
 
 # **************************************************************
 
@@ -125,5 +123,5 @@ def register_user(request):
 
 def list_users(request):
     users = User.objects.all()  # Fetch all users
-    custom_logger.info(f"This is the current registered  user list: {users}.")
+    logger.info('This is an info message from userarea')
     return render(request, 'userarea/list_users.html', {'users': users})

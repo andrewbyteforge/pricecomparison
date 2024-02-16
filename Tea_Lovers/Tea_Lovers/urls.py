@@ -25,10 +25,8 @@ urlpatterns = [
     # Set the root URL to the login view
     path('', userarea_views.login_user, name='login'),     
     # user area urls (excluding the login view if it's now the root)
-    path('userarea/', include('userarea.urls')), 
-    
-    path('', include('loggingapp.urls')),               
-    
+    path('userarea/', include('userarea.urls')),  
+             
     # Asda urls
     path('asda/', include('asda.urls')),     
       

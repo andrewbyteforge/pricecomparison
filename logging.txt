@@ -1,6 +1,6 @@
 # Use this to log events in apps. Add name to identify app
 from loggingapp.custom_logging import Logger
-custom_logger = Logger('userarea').logger
+custom_logger = Logger('asda').logger
 
 Then use the following at relevant points in code:
 

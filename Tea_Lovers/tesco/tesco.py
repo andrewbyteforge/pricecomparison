@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import csv
-from loggingapp.custom_logging import Logger
 from database.models import Product
 from interface.forms import SearchForm
 from scraper.config import FILE_CONFIG
@@ -18,7 +17,7 @@ class TescoScraper:
         from scraper.scraper import Scraper
         self.scraper = Scraper('url_tesco', search_term)
         # Initialize logger
-        self.log = Logger().logger
+        
 
 
     def scrape(self):
