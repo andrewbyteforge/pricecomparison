@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 def display_database(request):
     products = Product.objects.all()
     form = SearchForm()
+    logger.info("Database displayed")
     return render(request, 'interface/products.html', {
         'products': products,
         'form': form,

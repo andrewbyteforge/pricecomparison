@@ -1,8 +1,8 @@
 <!-- ********************************************************************************** -->
 <!-- Pagination Controls -->
 <!-- ********************************************************************************** -->
-<nav aria-label="Pagination">
-    <div class="card grey-background">
+
+<nav aria-label="Pagination">    
         <ul class="pagination">
             {% if page_obj.has_previous %}
             <li class="page-item">
@@ -35,8 +35,7 @@
                 <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&search_query={{ search_query }}{% for store in selected_stores %}&store={{ store }}{% endfor %}">Last</a>
             </li>
             {% endif %}
-        </ul>
-    </div>    
+        </ul>  
 </nav>
 <br>
 <br>

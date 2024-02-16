@@ -1,0 +1,5 @@
+*Add more stores
+
+*Payment for searches. Maybe 2 free
+
+*Limit registered to 20 initially

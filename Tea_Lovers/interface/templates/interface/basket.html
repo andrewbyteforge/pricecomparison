@@ -36,15 +36,13 @@
         </div>
     </div>
 </div>
-
 <!-- ***************************************************************** -->
 <!-- BASKETS -->
 <!-- ***************************************************************** -->
 <!-- Basket Placeholder -->
 <div id="basketPlaceholder" style="display: none;">
-    <!-- Baskets will be dynamically inserted here based on the selected store -->
+<!-- Baskets will be dynamically inserted here based on the selected store -->
 </div>
-
 <!-- ***************************************************************** -->
 <!-- Asda Basket -->
 <!-- ***************************************************************** -->
@@ -89,9 +87,9 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td><b>Total</b></td>
+                                <td>Total</td>
                                 <td id="asda-total">£{{ asda_total_price|default:"0.00" }}</td>
-                                <td><b>Total Points</b> = 1200</td>
+                                <td><b>Points Total 3500</b></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -149,8 +147,8 @@
                         <tfoot>
                             <tr>
                                 <td>Total</td>
-                                <td id="tesco-total">£{{ tesco_total|default:"0.00" }}</td>     
-                                <td><b>Total Points</b> = 1200</td>                           
+                                <td id="tesco-total">£{{ tesco_total|default:"0.00" }}</td>
+                                <td><b>Points Total 3500</b></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -177,7 +175,7 @@
                 </div> <!-- Consider responsive padding like px-2 -->
                 <div class="table-responsive">
                     <!-- Table-responsive wrapper for horizontal scrolling on small screens -->
-                    <table class="table table-bordered" id="sainsburysBasket">
+                    <table class="table table-bordered" id="sainsburys-basket">
                         <thead>
                             <tr>
                                 <th scope="col">Sainsburys Item</th>
@@ -209,7 +207,7 @@
                             <tr>
                                 <td>Total</td>
                                 <td id="sainsburys-total">£{{ sainsburys_total|default:"0.00" }}</td>
-                                <td><b>Total Points</b> = 1200</td>
+                                <td><b>Points Total 3500</b></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -233,7 +231,7 @@
                 </div> <!-- Consider responsive padding like px-2 -->
                 <div class="table-responsive">
                     <!-- Table-responsive wrapper for horizontal scrolling on small screens -->
-                    <table class="table table-bordered" id="morrisonsBasket">
+                    <table class="table table-bordered" id="morrisons-basket">
                         <thead>
                             <tr>
                                 <th scope="col">Morrisons Item</th>
@@ -265,7 +263,7 @@
                             <tr>
                                 <td>Total</td>
                                 <td id="morrisons-total">£{{ morrisons_total|default:"0.00" }}</td>
-                                <td><b>Total Points</b> = 1200</td>
+                                <td><b>Points Total 3500</b></td>
                             </tr>
                         </tfoot>
                     </table>
